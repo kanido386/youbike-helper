@@ -21,8 +21,14 @@ const infoSchema = new Schema({
     required: true,
   },
   location: {
-    type: {},
-    required: true,
+    type: {
+      type: String,
+      enum: ['Point'],
+      default: 'Point',
+    },
+    coordinates: {
+      type: [Number],
+    }
   },
   datatime: {
     type: Date,
@@ -32,6 +38,7 @@ const infoSchema = new Schema({
   strict: 'throw'
 });
 
+infoSchema.index({ location: '2dsphere' });
 const Info = mongoose.model('Info', infoSchema);
 
 module.exports = {

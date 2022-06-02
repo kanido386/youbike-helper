@@ -1,5 +1,5 @@
 const amqp = require('amqplib/callback_api');
-const { Info } = require('./model')
+const { Info } = require('./model');
 
 const initWorker1 = async () => {
   amqp.connect('amqp://localhost', (error0, connection) => {
@@ -22,8 +22,8 @@ const initWorker1 = async () => {
         // console.log(info['sna']);
         // console.log('v1');
         // console.log(info['sbi']);
-        // console.log(Number(info['lat']).toFixed(4));
         // console.log(Number(info['lng']).toFixed(4));
+        // console.log(Number(info['lat']).toFixed(4));
         // console.log(info['mday']);
         // console.log('==============================');
 
@@ -34,8 +34,8 @@ const initWorker1 = async () => {
           location: {
             type: 'Point',
             coordinates: [
-              Number(Number(info['lat']).toFixed(4)),
-              Number(Number(info['lng']).toFixed(4))
+              Number(Number(info['lng']).toFixed(4)),
+              Number(Number(info['lat']).toFixed(4))
             ]
           },
           // Transform '20220523235035' to '2022-05-23T23:50:35'
