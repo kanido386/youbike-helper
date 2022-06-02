@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('./partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+  <%- include('./partials/header'); %>
+</header>
+
+<main>
+  <div class="jumbotron">
+    <h1>This is great</h1>
+    <p>Welcome to templating using EJS</p>
+  </div>
+</main>
+
+<div class="h-100 d-flex align-items-center justify-content-center">
+  <button onclick="getLocation()">查找附近的 YouBike 站點！</button>
+</div>
+
+<footer>
+  <%- include('./partials/footer'); %>
+</footer>
+
+<script>
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    } else { 
+      alert('Geolocation is not supported by this browser.');
+    }
+  }
+
+  async function showPosition(position) {
+    // console.log(position.coords.longitude);
+    // console.log(position.coords.latitude);
+    const response = await axios.post('http://localhost:3000/search', {
+      longitude: position.coords.longitude,
+      latitude: position.coords.latitude
+    });
+    alert(`
+      ${response.data.result[0]['station']}: 剩 ${response.data.result[0]['available']} 台
+      ${response.data.result[1]['station']}: 剩 ${response.data.result[1]['available']} 台
+      ${response.data.result[2]['station']}: 剩 ${response.data.result[2]['available']} 台
+    `);
+  }
+</script>
+
+</body>
+</html>

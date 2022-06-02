@@ -10,19 +10,29 @@ initCrawler1();
   await initWorker1();
 })()
 
+// set the view engine to ejs
+app.set('view engine', 'ejs');
+app.use(express.json());
+
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  // res.send('Hello World!')
+  res.render('index');
 });
 
-app.get('/search', async (req, res, next) => {
+app.post('/search', async (req, res, next) => {
+  const { longitude, latitude } = req.body;
+  console.log(longitude);
+  console.log(latitude);
+
+  const result = []
+
   Info.aggregate(
     [
       {
         '$geoNear': {
           'near': {
             'type': 'Point',
-            // TODO: change to the data that users gave us
-            'coordinates': [ 121.5312, 25.0299 ]
+            'coordinates': [ longitude, latitude ]
           },
           'spherical': true,
           'distanceField': 'distance'
@@ -38,7 +48,16 @@ app.get('/search', async (req, res, next) => {
         console.log(info['station']);
         console.log(info['available']);
         console.log('==============================');
+        result.push({
+          station: info['station'],
+          available: info['available']
+        });
       }
+
+      res.status(200).json({
+        result
+      });
+
     }
   );
 });
