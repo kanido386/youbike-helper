@@ -1,8 +1,9 @@
 const amqp = require('amqplib/callback_api');
 const { Info } = require('./model');
+require('dotenv').config();
 
 const initWorker1 = async () => {
-  amqp.connect('amqp://localhost', (error0, connection) => {
+  amqp.connect(process.env.AMQP_URI, (error0, connection) => {
     if (error0) {
       throw error0;
     }

@@ -5,8 +5,15 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
-initCrawler1();
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
 (async() => {
+  await sleep(30000);  // waiting for rabbitmq
+  initCrawler1();
   await initWorker1();
 })()
 

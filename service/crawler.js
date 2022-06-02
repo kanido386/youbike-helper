@@ -2,6 +2,7 @@ const cron = require('node-cron');
 const fetch = require('node-fetch');
 const amqp = require('amqplib/callback_api');
 const { Info } = require('./model');
+require('dotenv').config();
 
 const initCrawler1 = () => {
   const crawler1Job = cron.schedule('* * * * *', async () => {
@@ -14,7 +15,7 @@ const initCrawler1 = () => {
     const response = await fetch('https://tcgbusfs.blob.core.windows.net/blobyoubike/YouBikeTP.json');
     const data = await response.json();
 
-    amqp.connect('amqp://localhost', function(error0, connection) {
+    amqp.connect(process.env.AMQP_URI, function(error0, connection) {
       if (error0) {
         throw error0;
       }
