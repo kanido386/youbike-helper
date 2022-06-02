@@ -42,7 +42,11 @@ const initWorker1 = async () => {
           datatime: new Date(`${info['mday'].slice(0,4)}-${info['mday'].slice(4,6)}-${info['mday'].slice(6,8)}T${info['mday'].slice(8,10)}:${info['mday'].slice(10,12)}:${info['mday'].slice(12,14)}`)
         };
 
-        const theInfo = await Info.create(newInfo);
+        // const theInfo = await Info.create(newInfo);
+        const theInfo = await Info.findOneAndUpdate({
+          station: info['sna'],
+          version: 'v1',
+        }, newInfo, { upsert: true });
         console.log(theInfo);
         console.log('==============================');
         
