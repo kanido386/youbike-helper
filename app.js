@@ -1,6 +1,7 @@
 const { initCrawler1 } = require('./service/crawler');
 const { initWorker1 } = require('./service/worker');
 const { Info } = require('./service/model');
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const port = 3000;
@@ -23,7 +24,9 @@ app.use(express.json());
 
 app.get('/', (req, res) => {
   // res.send('Hello World!')
-  res.render('index');
+  res.render('index', {
+    SEARCH_API_URL: process.env.SEARCH_API_URL
+  });
 });
 
 app.post('/search', async (req, res, next) => {

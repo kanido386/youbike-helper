@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+data:
+  MONGODB_URI: youbike-helper-db-service
+  AMQP_URI: my-rabbitmq-service
+  SEARCH_API_URL: 'http://localhost:30000/search'
+  # TODO:
+  # BACKEND_URI: youbike-helper-backend-service

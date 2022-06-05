@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: youbike-helper-backend-deployment
+spec:
+  selector:
+    matchLabels:
+      app: youbike-helper
+      tier: backend
+  replicas: 3
+  # refers to the pod
+  template:
+    metadata:
+      labels:
+        app: youbike-helper
+        tier: backend
+    spec:
+      containers:
+        - name: youbike-helper-backend
+          # image: <your_docker_hub_username>/youbike-helper-backend:latest
+          image: kanido386/youbike-helper-backend:latest
+          env:
+            # - name: NODE_ENV
+            #   value: "production"
+            - name: MONGODB
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: MONGODB_URI
+            # 後來才知道要這樣寫，所以變數名稱有點亂
+            - name: MONGODB_URI
+              value: mongodb://$(MONGODB)
+            - name: AMQP
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: AMQP_URI
+            - name: AMQP_URI
+              value: amqp://$(AMQP)
+            # TODO:
+            # - name: BACKEND_URI
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       name: backend-config
+            #       key: BACKEND_URI
+            # - name: SEARCH_API_URL
+            #   value: http://$(BACKEND_URI)/search
+            - name: SEARCH_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: SEARCH_API_URL
+            # - name: SECRET
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: backend-secrets
+            #       key: backend_secret
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1024Mi"
+          ports:
+            - containerPort: 3000

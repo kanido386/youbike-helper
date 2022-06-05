@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: youbike-helper-db-deployment
+spec:
+  selector:
+    matchLabels:
+      app: youbike-helper
+      tier: db
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  # refers to the pod
+  template:
+    metadata:
+      labels:
+        app: youbike-helper
+        tier: db
+    spec:
+      containers:
+      - name: youbike-helper-db
+        image: mongo
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - mountPath: /mnt/data
+          name: youbike-helper-db-volume
+      volumes:
+      - name: youbike-helper-db-volume
+        persistentVolumeClaim:
+          claimName: youbike-helper-db-pv-claim

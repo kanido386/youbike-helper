@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: youbike-helper-ingress
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: youbike-helper-backend-service
+            port:
+              number: 3000
+      # - path: /
+      #   pathType: Prefix
+      #   backend:   # 這仍舊是 backend
+      #     service:
+      #       name: youbike-helper-frontend-service
+      #       port:
+      #         number: 80
